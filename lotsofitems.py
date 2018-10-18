@@ -114,12 +114,18 @@ catalog6 = Catalog(name="Rock Climbing")
 session.add(catalog6)
 session.commit()
 
-catalogItem61 = CatalogItem(user_id=1, name="new harness for men",
+catalogItem61 = CatalogItem(user_id=2, name="new harness for men2",
+                            description="new rock climbing\
+                            harness for men, $70",
+                            catalog=catalog6)
+
+catalogItem62 = CatalogItem(user_id=2, name="new harness for men22",
                             description="new rock climbing\
                             harness for men, $70",
                             catalog=catalog6)
 
 session.add(catalogItem61)
+session.add(catalogItem62)
 session.commit()
 
 # Catalog for Skiing

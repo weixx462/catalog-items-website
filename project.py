@@ -273,7 +273,7 @@ def gdisconnect():
         return response
 
 
-# JSON APIs to view Restaurant Information
+# JSON APIs to view Catalog Information
 @app.route('/catalog.json')
 def catalogItemsJSON():
     catalog = session.query(Catalog).all()
@@ -290,6 +290,19 @@ def catalogItemsJSON():
             Category.append(tempCategory.copy())
 
     return jsonify(Category=Category)
+
+
+@app.route('/catalog/<int:catalog_id>/items/JSON')
+def catalogJSON(catalog_id):
+    items = session.query(CatalogItem).filter_by(
+        catalog_id=catalog_id).all()
+    return jsonify(Items=[i.serialize for i in items])
+
+
+@app.route('/catalog/<int:catalog_id>/items/<int:item_id>/JSON')
+def itemJSON(catalog_id, item_id):
+    item = session.query(CatalogItem).filter_by(id=item_id).one()
+    return jsonify(Item=item.serialize)
 
 
 # Show all catalogs
@@ -378,6 +391,10 @@ def editItem(catalog_name, item_name):
     editedItem = session.query(
             CatalogItem).filter_by(
             catalog_id=catalog.id).filter_by(name=item_name).one()
+    if login_session['user_id'] != editedItem.user_id:
+        return "<script>function myFunction() {alert('You are not\
+    authorized to edit items to this catalog. It belongs to others');}\
+    </script><body onload='myFunction()'>"
     if request.method == 'POST':
         if request.form['name']:
             editedItem.name = request.form['name']
@@ -411,6 +428,10 @@ def deleteItem(catalog_name, item_name):
     itemToDelete = session.query(
             CatalogItem).filter_by(
             catalog_id=catalog.id).filter_by(name=item_name).one()
+    if login_session['user_id'] != itemToDelete.user_id:
+        return "<script>function myFunction() {alert('You are not\
+    authorized to delete items to this catalog. It belongs to others');}\
+    </script><body onload='myFunction()'>"
     if request.method == 'POST':
         session.delete(itemToDelete)
         session.commit()
