@@ -20,7 +20,9 @@ To setup sqlite database for the website, run "python database_setup.py". To ini
 To spin up the web server, run "python project.py". A localhost server will be up and running listening to port 8000.
 
 The application provides a JSON endpoint: http://localhost:8000/catalog.json
+
 To retrieve arbitrary catalog: http://localhost:8000/catalog/<int:catalog_id>/items/JSON
+
 To retrieve arbitrary item: http://localhost:8000/catalog/<int:catalog_id>/items/<int:item_id>/JSON
 
 To access homepage: http://localhost:8000/ or http://localhost:8000/catalog
